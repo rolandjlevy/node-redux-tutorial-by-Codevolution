@@ -1,12 +1,12 @@
-const redux = require('redux');
-const { createStore } = redux; 
+  const redux = require('redux');
+const { createStore } = redux;
 
 const BUY_CAKE = 'BUY_CAKE';
 
 const buyCake = () => {
   return {
     type: BUY_CAKE,
-    info: 'First redux action'
+    info: 'You bought one cake'
   }
 }
 
@@ -22,16 +22,20 @@ const reducer = (state = initialState, action) => {
         numOfCakes: state.numOfCakes - 1
       }
     default:
-      return state
+      return state;
   }
 }
 
 const store = createStore(reducer);
-console.log('Initial state => ', store.getState());
+
+console.log('initial state: ', store.getState());
+
 const unsubscribe = store.subscribe(() => {
-  console.log('State updated => ', store.getState());
+  console.log('Updated state: ', store.getState());
 });
+
 store.dispatch(buyCake());
 store.dispatch(buyCake());
 store.dispatch(buyCake());
+
 unsubscribe();
