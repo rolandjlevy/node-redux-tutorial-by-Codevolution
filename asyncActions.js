@@ -32,7 +32,7 @@ const fetchUsersFailure = (error) => {
   }
 }
 
-const reducer = (state = initialState, action) {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FESTCH_USERS_REQUEST:
       ...state,
