@@ -39,13 +39,13 @@ const reducer = (state = initialState, action) => {
           ...state,
         loading: true
       }
-    case: FESTCH_USERS_SUCCESS:
+    case FESTCH_USERS_SUCCESS:
       return {
         loading: false,
         users: action.payload,
         error: ''
       }
-    case: FESTCH_USERS_FAILURE:
+    case FESTCH_USERS_FAILURE:
       return {
         loading: false,
         users: [],
