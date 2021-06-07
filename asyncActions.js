@@ -35,18 +35,24 @@ const fetchUsersFailure = (error) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FESTCH_USERS_REQUEST:
-      ...state,
-      loading: true
+      return {
+          ...state,
+        loading: true
+      }
     case: FESTCH_USERS_SUCCESS:
-      loading: false,
-      users: action.payload,
-      error: ''
+      return {
+        loading: false,
+        users: action.payload,
+        error: ''
+      }
     case: FESTCH_USERS_FAILURE:
-      loading: false,
-      users: [],
-      error: action.payload
+      return {
+        loading: false,
+        users: [],
+        error: action.payload
+      }
     default:
-      state
+      return state
   }
 }
 
