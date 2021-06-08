@@ -64,3 +64,4 @@ const store = createStore(reducer, applyMiddleware(logger));
 console.log('initial state: ', store.getState());
 
 store.dispatch(fetchUsersSuccess());
+store.dispatch(fetchUsersFailure('Could not load'));
