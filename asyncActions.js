@@ -1,6 +1,9 @@
 const redux = require('redux');
 const thunk = require('redux-thunk');
-const { createStore } = redux;
+const reduxLogger = require('redux-logger');
+
+const { createStore, applyMiddleware } = redux;
+const logger = reduxLogger.createLogger();
 
 const initialState = {
   loading: false,
@@ -8,44 +11,44 @@ const initialState = {
   error: ''
 }
 
-const FESTCH_USERS_REQUEST = 'FESTCH_USERS_REQUEST';
-const FESTCH_USERS_SUCCESS = 'FESTCH_USERS_SUCCESS';
-const FESTCH_USERS_FAILURE = 'FESTCH_USERS_FAILURE';
+const FETCH_USERS_REQUEST = 'FETCH_USERS_REQUEST';
+const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
+const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';
 
 const fetchUsersRequest = () => {
   return {
-    type: FESTCH_USERS_REQUEST
+    type: FETCH_USERS_REQUEST
   }
 }
 
 const fetchUsersSuccess = (users) => {
   return {
-    type: FESTCH_USERS_SUCCESS,
+    type: FETCH_USERS_SUCCESS,
     payload: users
   }
 }
 
 const fetchUsersFailure = (error) => {
   return {
-    type: FESTCH_USERS_FAILURE,
+    type: FETCH_USERS_FAILURE,
     payload: error
   }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case FESTCH_USERS_REQUEST:
+    case FETCH_USERS_REQUEST:
       return {
           ...state,
         loading: true
       }
-    case FESTCH_USERS_SUCCESS:
+    case FETCH_USERS_SUCCESS:
       return {
         loading: false,
         users: action.payload,
         error: ''
       }
-    case FESTCH_USERS_FAILURE:
+    case FETCH_USERS_FAILURE:
       return {
         loading: false,
         users: [],
@@ -56,4 +59,8 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(logger));
+
+console.log('initial state: ', store.getState());
+
+store.dispatch(fetchUsersSuccess());
