@@ -83,9 +83,6 @@ const store = createStore(
 
 console.log('initial state: ', store.getState());
 
-// store.dispatch(fetchUsersSuccess(['bob', 'tim', 'ana']));
-// store.dispatch(fetchUsersFailure('Could not load'));
-
 store.subscribe(() => {
   console.log('Current state: ', store.getState());
 });
