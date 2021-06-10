@@ -1,5 +1,6 @@
 const redux = require('redux');
-const thunk = require('redux-thunk');
+const thunkMiddleware = require('redux-thunk').default;
+const axios = require('axios');
 const reduxLogger = require('redux-logger');
 
 const { createStore, applyMiddleware } = redux;
@@ -59,9 +60,34 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-const store = createStore(reducer, applyMiddleware(logger));
+const fetchUsers = () => {
+  // thunk middleware allows Redux to return a function instead of an action object. Doesn't have to be pure. It receives the dispatch method as its parameteer
+  const url = 'https://jsonplaceholder.typicode.com/users';
+  return function(dispatch) {
+    dispatch(fetchUsersRequest());
+    axios.get(url)
+      .then(res => {
+        const users = res.data.map(user => user.id)
+        dispatch(fetchUsersSuccess(users));
+      })
+      .catch(err => {
+        dispatch(fetchUsersFailure(err.message));
+      });
+  }
+}
+
+const store = createStore(
+  reducer, 
+  applyMiddleware(thunkMiddleware)
+);
 
 console.log('initial state: ', store.getState());
 
-store.dispatch(fetchUsersSuccess(['bob', 'tim', 'ana']));
-store.dispatch(fetchUsersFailure('Could not load'));
+// store.dispatch(fetchUsersSuccess(['bob', 'tim', 'ana']));
+// store.dispatch(fetchUsersFailure('Could not load'));
+
+store.subscribe(() => {
+  console.log('Current state: ', store.getState());
+});
+
+store.dispatch(fetchUsers());
